@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Complaint Form</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; padding: 20px; }
+        form { max-width: 600px; margin: auto; }
+        label { font-weight: bold; display: block; margin-top: 10px; }
+        input, textarea, select { width: 100%; padding: 8px; margin-top: 5px; }
+        button { margin-top: 20px; padding: 10px; background: #007BFF; color: white; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h2>Customer Complaint Form</h2>
+    <form id="complaintForm">
+        <label>Name:</label>
+        <input type="text" id="name" required>
+        
+        <label>Company/Organization:</label>
+        <input type="text" id="company" required>
+        
+        <label>Contact Number:</label>
+        <input type="tel" id="contact" required>
+        
+        <label>Email Address:</label>
+        <input type="email" id="email" required>
+        
+        <label>Date of Issue:</label>
+        <input type="date" id="date" required>
+        
+        <h3>Initial Troubleshooting Checklist (Check before submitting):</h3>
+        <label><input type="checkbox" id="powerCheck"> Power & Connections checked</label>
+        <label><input type="checkbox" id="softwareCheck"> Software is running and updated</label>
+        <label><input type="checkbox" id="errorCheck"> Error messages noted</label>
+        <label><input type="checkbox" id="manualCheck"> Checked the user manual</label>
+        <label><input type="checkbox" id="rebootCheck"> Tried restarting the system</label>
+        <label><input type="checkbox" id="environmentCheck"> Checked for external factors</label>
+        <label><input type="checkbox" id="previousActionsCheck"> Noted recent changes</label>
+        
+        <label>Equipment/Software Involved:</label>
+        <input type="text" id="equipment" required>
+        
+        <label>Serial Number (if applicable):</label>
+        <input type="text" id="serialNumber">
+        
+        <label>Detailed Description of the Issue:</label>
+        <textarea id="issue" required></textarea>
+        
+        <label>Steps Taken to Resolve:</label>
+        <textarea id="stepsTaken"></textarea>
+        
+        <label>Preferred Mode of Response:</label>
+        <select id="responseMode">
+            <option>Email</option>
+            <option>Phone Call</option>
+            <option>Virtual Meeting</option>
+            <option>On-Site Visit</option>
+        </select>
+        
+        <button type="submit">Submit Complaint</button>
+    </form>
+    
+    <script>
+        document.getElementById('complaintForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = {
+                name: document.getElementById('name').value,
+                company: document.getElementById('company').value,
+                contact: document.getElementById('contact').value,
+                email: document.getElementById('email').value,
+                date: document.getElementById('date').value,
+                powerCheck: document.getElementById('powerCheck').checked,
+                softwareCheck: document.getElementById('softwareCheck').checked,
+                errorCheck: document.getElementById('errorCheck').checked,
+                manualCheck: document.getElementById('manualCheck').checked,
+                rebootCheck: document.getElementById('rebootCheck').checked,
+                environmentCheck: document.getElementById('environmentCheck').checked,
+                previousActionsCheck: document.getElementById('previousActionsCheck').checked,
+                equipment: document.getElementById('equipment').value,
+                serialNumber: document.getElementById('serialNumber').value,
+                issue: document.getElementById('issue').value,
+                stepsTaken: document.getElementById('stepsTaken').value,
+                responseMode: document.getElementById('responseMode').value
+            };
+            fetch('/submit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            }).then(response => response.json())
+              .then(data => alert(data.message))
+              .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>
